@@ -42,6 +42,7 @@ public class ListViewAdapter extends BaseAdapter {
     return 0;
   }
 
+  @SuppressLint({"SetTextI18n", "ViewHolder"})
   @NonNull
   @Override
   public View getView(int position, View view, ViewGroup parent) {
@@ -50,10 +51,12 @@ public class ListViewAdapter extends BaseAdapter {
 
     TextView nameTextView = view.findViewById(R.id.nameTextView);
     TextView quantityTextView = view.findViewById(R.id.quantityTextView);
+    TextView priceTextView = view.findViewById(R.id.priceTextView);
 
     Product curr = getItem(position);
+    nameTextView.setText(curr.name);
     quantityTextView.setText(Integer.toString(curr.quantity));
-
+    priceTextView.setText(Double.toString(curr.price));
     return view;
   }
 }

@@ -15,12 +15,12 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
 
   public DBHelper(Context context) {
-    super(context, "productsDatabase", null, 1);
+    super(context, "doubleDB", null, 1);
   }
 
   @Override
   public void onCreate(SQLiteDatabase sqLiteDatabase) {
-    sqLiteDatabase.execSQL("CREATE TABLE products (id INT PRIMARY KEY, name TEXT, quantity INT);");
+    sqLiteDatabase.execSQL("CREATE TABLE products (id INT PRIMARY KEY, name TEXT, quantity INTEGER, price DOUBLE);");
   }
 
   @Override
@@ -34,19 +34,21 @@ public class DBHelper extends SQLiteOpenHelper {
     ContentValues cv = new ContentValues();
     cv.put("name", product.name);
     cv.put("quantity", product.quantity);
+    cv.put("price", product.price);
     return db.insert("products", null, cv);
   }
 
-  @SuppressLint("Range")
+  @SuppressLint({"Range", "Recycle"})
   public List<Product> getProducts() {
     List<Product> productList = new ArrayList<>();
     SQLiteDatabase db = getReadableDatabase();
-    Cursor c = db.query("products", new String[]{"name", "quantity"}, null, null, null, null, null);
+    Cursor c = db.query("products", new String[]{"name", "quantity", "price"}, null, null, null, null, null);
 
     while (c.moveToNext()) {
       String name = c.getString(c.getColumnIndex("name"));
       int quantity = c.getInt(c.getColumnIndex("quantity"));
-      productList.add(new Product(name, quantity));
+      double price = c.getDouble(c.getColumnIndex("price"));
+      productList.add(new Product(name, quantity, price));
     }
 
     return productList;

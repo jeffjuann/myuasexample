@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,7 @@ import com.jeffjuann.myuasexample.model.Product;
 
 public class InputFragment extends Fragment {
 
-  EditText nameField, quantityField;
+  EditText nameField, quantityField, priceField;
   Button saveBtn;
 
   @Override
@@ -31,6 +30,7 @@ public class InputFragment extends Fragment {
 
     nameField = view.findViewById(R.id.nameField);
     quantityField = view.findViewById(R.id.quantityField);
+    priceField  = view.findViewById(R.id.priceField);
     saveBtn = view.findViewById(R.id.saveBtn);
 
     saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -38,8 +38,10 @@ public class InputFragment extends Fragment {
       public void onClick(View view) {
         DBHelper db = new DBHelper(view.getContext());
         String name = nameField.getText().toString();
-        int quantity = Integer.parseInt(quantityField.getText().toString());
-        db.insertData(new Product(name, quantity));
+        String quantityString = quantityField.getText().toString();
+        int quantity = Integer.parseInt(quantityString);
+        double price = Double.parseDouble(priceField.getText().toString());
+        db.insertData(new Product(name, quantity, price));
         loadRecyclerView();
       }
     });
@@ -49,10 +51,8 @@ public class InputFragment extends Fragment {
 
   private void loadRecyclerView()
   {
-    FragmentManager fm = getParentFragmentManager();
-    FragmentTransaction ft = fm.beginTransaction();
-    ft.replace(R.id.dataFragment, new DataFragment());
-    ft.commit();
+    getParentFragmentManager().beginTransaction()
+            .replace(R.id.dataFragment, new DataFragment()).commit();
   }
 }
 

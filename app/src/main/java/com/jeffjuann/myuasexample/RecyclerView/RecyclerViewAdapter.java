@@ -36,6 +36,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     Product curr = list.get(position);
     holder.nameTextView.setText(curr.name);
     holder.quantityTextView.setText(Integer.toString(curr.quantity));
+    holder.priceTextView.setText(Double.toString(curr.price));
   }
 
   @Override
